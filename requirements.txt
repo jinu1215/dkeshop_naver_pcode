@@ -1,0 +1,4 @@
+easydict==1.6
+PyYAML==3.11
+requests==2.11.1
+xmltodict==0.10.2
