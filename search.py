@@ -44,15 +44,15 @@ def get_naver_shop_code(conf):
         status, body = _naver_shop_search(params)
         if status == 200:
             data = json.loads(json.dumps(xmltodict.parse(body)))
-            result[code] = ''
+            result[code] = list()
             items = data['rss']['channel']['item']
             if isinstance(items, list):
                 for item in items:
                     if item["mallName"].decode('utf-8')  == '데상트코리아':
-                        result[code] = item['productId']
+                        result[code].append(item['productId'])
             else:
                 if items["mallName"].decode('utf-8')  == '데상트코리아':
-                    result[code] = items['productId']
+                    result[code].append(item['productId'])
 
     return result
 
@@ -63,7 +63,8 @@ def create_csv_file(filename, data):
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for key in data.keys():
-            writer.writerow({"descent_code": key, "naver_code": data[key]})
+            for value in data[key]:
+                writer.writerow({"descent_code": key, "naver_code": value})
 
 
 if __name__ == '__main__':
